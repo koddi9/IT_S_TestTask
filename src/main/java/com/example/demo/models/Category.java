@@ -1,22 +1,22 @@
-package com.example.demo.model;
+package com.example.demo.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+//@Document
 @Entity
 @NoArgsConstructor
 @Getter
-public class AuxiliaryText {
-
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Lob
+    @Column(length = 2048)
     private String value;
 
-    public AuxiliaryText(String value) {
+    public Category(String value) {
         this.value = value;
     }
 }

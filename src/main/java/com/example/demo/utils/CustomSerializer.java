@@ -1,8 +1,8 @@
 package com.example.demo.utils;
 
-import com.example.demo.model.Article;
-import com.example.demo.model.AuxiliaryText;
-import com.example.demo.model.Category;
+import com.example.demo.models.Article;
+import com.example.demo.models.AuxiliaryText;
+import com.example.demo.models.Category;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
