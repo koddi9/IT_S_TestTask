@@ -26,7 +26,7 @@ public class CustomSerializer extends StdSerializer<Article> {
         gen.writeStringField("title", article.getTitle());
         gen.writeStringField("language", article.getLanguage());
         gen.writeStringField("wiki", article.getWiki());
-        //        long create_timestamp = Instant.parse(createTimestampString).getEpochSecond();
+
         long t = article.getCreate_timestamp().toInstant().getEpochSecond();
         gen.writeNumberField("create_timestamp", t);
         t = article.getTimestamp().toInstant().getEpochSecond();
