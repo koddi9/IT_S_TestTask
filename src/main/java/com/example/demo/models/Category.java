@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-//@Document
 @Entity
 @NoArgsConstructor
 @Getter
@@ -15,8 +14,11 @@ public class Category {
     private long id;
     @Column(length = 2048)
     private String value;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Article article;
 
-    public Category(String value) {
+    public Category(String value, Article article) {
         this.value = value;
+        this.article = article;
     }
 }

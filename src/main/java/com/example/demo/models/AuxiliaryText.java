@@ -15,8 +15,11 @@ public class AuxiliaryText {
     private long id;
     @Lob
     private String value;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Article article;
 
-    public AuxiliaryText(String value) {
+    public AuxiliaryText(String value, Article article) {
         this.value = value;
+        this.article = article;
     }
 }
