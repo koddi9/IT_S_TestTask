@@ -36,24 +36,28 @@ public class CustomDeserializer extends StdDeserializer<Article> {
     public Article deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
         ObjectCodec codec = p.getCodec();
         JsonNode node = codec.readTree(p);
+        Article article = new Article();
 
         String title = node.get("title").asText();
+        article.setTitle(title);
         String language = node.get("language").asText();
+        article.setLanguage(language);
         String wiki = node.get("wiki").asText();
+        article.setWiki(wiki);
 
         Timestamp create_timestamp = getTimestampFromJsonField(node.get("create_timestamp"));
+        article.setCreate_timestamp(create_timestamp);
         Timestamp timestamp = getTimestampFromJsonField(node.get("timestamp"));
+        article.setTimestamp(timestamp);
 
         JsonNode auxiliaryTextNode = node.get("auxiliary_text");
-        List<AuxiliaryText> auxiliaryTexts = getListFromJsonArray(auxiliaryTextNode, AuxiliaryText.class);
+        List<AuxiliaryText> auxiliaryTexts = getListFromJsonArray(auxiliaryTextNode, AuxiliaryText.class, article);
+        article.setAuxiliary_text(auxiliaryTexts);
 
         JsonNode categoriesTextNode = node.get("category");
-        List<Category> categories = getListFromJsonArray(categoriesTextNode, Category.class);
+        List<Category> categories = getListFromJsonArray(categoriesTextNode, Category.class, article);
+        article.setCategory(categories);
 
-        Article article = Article.builder()
-                .title(title).language(language).wiki(wiki)
-                .create_timestamp(create_timestamp).timestamp(timestamp)
-                .auxiliary_text(auxiliaryTexts).category(categories).build();
         return article;
     }
 
@@ -62,7 +66,7 @@ public class CustomDeserializer extends StdDeserializer<Article> {
         return Timestamp.valueOf(localDateTime);
     }
 
-    private <T> List<T> getListFromJsonArray(JsonNode node, Class<T> c) {
+    private <T> List<T> getListFromJsonArray(JsonNode node, Class<T> c, Article a) {
         if (node == null || node.isNull()) {
             return Collections.emptyList();
         }
@@ -73,7 +77,7 @@ public class CustomDeserializer extends StdDeserializer<Article> {
             while (iterator.hasNext()) {
                 String arrayElement = iterator.next().asText();
                 if (!arrayElement.isBlank()) {
-                    list.add(c.getDeclaredConstructor(String.class).newInstance(arrayElement));
+                    list.add(c.getDeclaredConstructor(String.class, Article.class).newInstance(arrayElement, a));
                 }
             }
         } catch (Exception e) {
